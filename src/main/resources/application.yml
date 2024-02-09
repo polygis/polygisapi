@@ -1,0 +1,16 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/polygis
+    username: root
+    password: test
+    driverClassName: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 20000
+server:
+  port: 9000
