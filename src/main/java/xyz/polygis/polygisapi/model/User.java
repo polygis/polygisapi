@@ -24,7 +24,10 @@ public class User implements Serializable {
 		Membership(String status) {
 			this.status = status;
 		}
-
+		@Override
+		public String toString() {
+			return status;
+		}
 		public String isCommon() {
 			return status;
 		}
@@ -76,8 +79,8 @@ public class User implements Serializable {
 		return this.membership;
 	}
 
-	public void setMembership(Membership membership) {
-		this.membership = membership;
+	public void setMembership(String membership) {
+		this.membership = User.Membership.valueOf(Membership.class, membership);
 	}
 
 }

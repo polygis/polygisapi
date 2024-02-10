@@ -5,12 +5,17 @@ spring:
     database: POSTGRESQL
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/polygis
-    username: root
-    password: test
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/polygis}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:test}
     driverClassName: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
       connection-timeout: 20000
 server:
   port: 9000
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
