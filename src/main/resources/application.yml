@@ -4,6 +4,10 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
+  thymeleaf:
+    cache: "false"
+    prefix: classpath:/views/
+    suffix: .html
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/polygis}
     username: ${DB_USERNAME:root}
