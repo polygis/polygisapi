@@ -1,4 +1,4 @@
 - testing commits
 - second commit test
-- rwefactored pre commit message
+- refactored pre commit message
 - 
