@@ -28,12 +28,6 @@ public class PolygisApiApplication {
 		return args -> {
 
 			System.out.println("Running.....");
-			User u1 = new User();
-			u1.setEmail("mihalcea.bogdan.daniel@gmail.com");
-			u1.setChromeId("21321b4b43b2h");
-			u1.setMembership(User.Membership.ACTIVE.toString());
-			userRepository.save(u1);
-			System.out.println("Saved users.....");
 		};
 	}
 	// @Bean
