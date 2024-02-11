@@ -1,4 +1,4 @@
-package xyz.polygis.polygisapi.web.controller;
+package xyz.polygis.polygisapi.controller.api;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ import xyz.polygis.polygisapi.service.UserService;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/public/api/v1")
 public class UserController extends BaseController {
 
 	@Autowired

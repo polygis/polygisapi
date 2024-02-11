@@ -1,4 +1,4 @@
-package xyz.polygis.polygisapi.web.controller;
+package xyz.polygis.polygisapi.controller.api;
 
 import java.util.HashMap;
 import java.util.Map;
