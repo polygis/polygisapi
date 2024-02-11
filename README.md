@@ -56,7 +56,7 @@ exec("git branch --show-current", (err, stdout, stderr) => {
    }
 
    const [branchName, branchIssueNumber, _, __, branchdescription] = stdout.match(regex_branch_issue_number);
-   const cleanBeanchDescription = branchdescription.replace(/[-_]/, " ");
+   const cleanBeanchDescription = branchdescription.replaceAll(/[-_]/, " ");
    jiraIssue = `${branchIssueNumber} ${cleanBeanchDescription}\n\n`;
    const newCommitMessage = jiraIssue + commitMessage;
    try {
