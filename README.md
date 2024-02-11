@@ -52,11 +52,11 @@ exec("git branch --show-current", (err, stdout, stderr) => {
    }
 
    if (!regex_commit_issue_number.test(commitMessage)) {
-    process.stdout.write("\x1b[93m No Jira issue description specified in the commit message, adding automated description\x1b[0m");
+    console.log("\x1b[93m No Jira issue description specified in the commit message, adding automated description\x1b[0m");
    }
 
    const [branchName, branchIssueNumber, _, __, branchdescription] = stdout.match(regex_branch_issue_number);
-   const cleanBeanchDescription = branchdescription.replaceAll(/[-_]/, " ");
+   const cleanBeanchDescription = branchdescription.replaceAll(/[-_]/gi, " ");
    jiraIssue = `${branchIssueNumber} ${cleanBeanchDescription}\n\n`;
    const newCommitMessage = jiraIssue + commitMessage;
    try {
@@ -71,6 +71,6 @@ exec("git branch --show-current", (err, stdout, stderr) => {
   }
  }
 
- process.exit(0);
+process.exit(0);
 });
 ```
