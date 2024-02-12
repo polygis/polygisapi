@@ -9,80 +9,68 @@ gradle wrapper
 
 ### pre commit message
 
-```ruby
-#!/usr/bin/env ruby
+Add to `./.git/hooks/prepare-commit-message` the following
 
-# require preinstalled ruby system gem
-require 'open3'
+```js
+#!/usr/bin/env node
 
-# config
-$verbose = true
-$verbose_prefix = "git hook: "
+/**
+ * --no-verify bypass pre-commit and commit-msg hooks
+ */
+const fs = require("fs");
 
-# regex definitions
-regex_commit_issue_number = /^\s*[\-\w]*\d/
-regex_branch_issue_number = /([\-\w]*?\-\d+)/
-regex_git_commit_messages = /(Merge\sbranch\s'|\#\sRebase\s|This\sreverts\scommit\s)/
+const { exec } = require("child_process");
+// Check if commit has issue number
+const regex_commit_issue_number = /^\s*[\-\w]*\d/;
+// Extract issue number from branch
+const regex_branch_issue_number = /([\-\w]*?\-\d+)(([-_])(.*\S))?/;
+// Check protected branches
+const regex_protected_branch = /(main)|(develop)/;
+// Automated git messages
+const regex_git_commit_messages = /Merge\sbranch|Rebase|This\sreverts\scommit/;
 
-# colorize strings in console output
-class String
-	def error;   "\e[31m#{self}\e[0m" end
-	def success; "\e[32m#{self}\e[0m" end
-end
+const commitMessageLocation = process.argv[2];
 
-# helper method
-def puts_verbose(message, error = false)
-	return if !$verbose
-	puts ((error) ? $verbose_prefix.error : $verbose_prefix.success) + message
-end
+let jiraIssue;
 
-# get the file name for commit message
-commit_file = ARGV[0]
+exec("git branch --show-current", (err, stdout, stderr) => {
+ if (!stderr && !err) {
+  if (!regex_branch_issue_number.test(stdout)) {
+   if (regex_protected_branch.test(stdout)) {
+    const protectedMessage = "\x1b[31mYou are trying to push into a protected branch: \x1b[1m" + stdout + "\x1b[0m";
+    process.stdout.write(protectedMessage);
+    process.stdout.write("\x1b[31m Use --no-verify flag to bypass this error.\x1b[0m");
+    process.exit(1);
+   }
+   process.stdout.write("\x1b[93m No Jira issue number found in branch name " + stdout + " \x1b[0m");
+   process.exit(0);
+  } else {
+   const commitMessage = fs.readFileSync(commitMessageLocation, { encoding: "utf-8" });
+   if (regex_git_commit_messages.test(commitMessage)) {
+    process.stdout.write("\x1b[93m This seems to be an automated message from git. Skipping pre-commit-hook\x1b[0m");
+    process.exit(0);
+   }
 
-# read original commit message
-original_commit_message = File.read(commit_file)
+   if (!regex_commit_issue_number.test(commitMessage)) {
+    console.log("\x1b[93m No Jira issue description specified in the commit message, adding automated description\x1b[0m");
+   }
 
-# check if original commit message contains issue number
-if original_commit_message.match(regex_commit_issue_number) != nil
-	puts_verbose("Current commit already contains an issue number.")
-	exit
-end
+   const [branchName, branchIssueNumber, _, __, branchdescription] = stdout.match(regex_branch_issue_number);
+   const cleanBeanchDescription = branchdescription.replaceAll(/[-_]/gi, " ");
+   jiraIssue = `${branchIssueNumber} ${cleanBeanchDescription}\n\n`;
+   const newCommitMessage = jiraIssue + commitMessage;
+   try {
+    fs.writeFileSync(commitMessageLocation, newCommitMessage);
+    process.stdout.write("\x1b[32m Added issue description to commit message.\x1b[0m");
+    // file written successfully
+   } catch (err) {
+    process.stderr.write(err);
+    process.stdout.write("\x1b[31m There was an error editing the commit mesage. Please use --no-verify to bypass this hook\x1b[0m");
+    process.exit(1);
+   }
+  }
+ }
 
-# check if original commit message contains automatic git commits
-if original_commit_message.match(regex_git_commit_messages) != nil
-	puts_verbose("Current commit looks like an automatic commit by git.")
-	exit
-end
-
-# get the current branch name
-git_branch_command = "git rev-parse --abbrev-ref HEAD"
-branch_name, error, result = Open3.capture3(git_branch_command)
-
-# check if branch name failed
-if result.exitstatus != 0
-	puts_verbose("Unable to get git branch name.", true)
-	exit
-end
-
-# parse the current issue
-issue_number = branch_name[regex_branch_issue_number, 1]
-
-# check if issue number
-if !issue_number
-	puts_verbose("No issue number found in branch name.")
-	exit
-end
-
-# combine to new message
-new_commit_message = "#{issue_number.upcase} #{original_commit_message.gsub(/(\s[[:punct:]])+$/, '')}"
-
-puts_verbose(new_commit_message)
-
-# write new commit message to file
-File.open(commit_file, 'w') do |f|
-	f.write(new_commit_message)
-end
-
-# successful message
-puts_verbose("Automatically added issue number to commit message.")
+process.exit(0);
+});
 ```

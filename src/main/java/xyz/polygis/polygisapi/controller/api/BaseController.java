@@ -37,4 +37,22 @@ abstract class BaseController {
 						.build());
 	}
 
+	protected ResponseEntity<?> buildDuplicateEntry() {
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(ErrorMessage.builder()
+						.status(409)
+						.error("Duplicate key")
+						.message("Duplicate entry on column")
+						.build());
+	}
+
+	protected ResponseEntity<?> buildBadRequest() {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(ErrorMessage.builder()
+						.status(400)
+						.error("Bad request")
+						.message("Bad request")
+						.build());
+	}
+
 }
