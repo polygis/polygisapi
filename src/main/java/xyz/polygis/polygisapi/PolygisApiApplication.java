@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
-import xyz.polygis.polygisapi.model.User;
 import xyz.polygis.polygisapi.repository.UserRepository;
 // import xyz.polygis.polygisapi.service.UserService;
 

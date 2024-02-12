@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.persistence.EntityExistsException;
+import xyz.polygis.polygisapi.model.BMCWebhookData;
 import xyz.polygis.polygisapi.model.User;
 import xyz.polygis.polygisapi.service.UserService;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
-@RequestMapping("/public/api/v1")
-public class UserController extends BaseController {
+@RequestMapping("/public/api/v1/bmc")
+public class BMCController extends BaseController {
 
 	@Autowired
 	private UserService userService;
@@ -55,6 +56,12 @@ public class UserController extends BaseController {
 	@GetMapping("/")
 	public ResponseEntity<Object> index() {
 		return ResponseEntity.status(418).body(null);
+	}
+
+	@PostMapping("/")
+	public ResponseEntity<Object> donationCreated(@RequestBody BMCWebhookData bmcData) {
+		BMCWebhookData bd = bmcData;
+		return ResponseEntity.status(200).body(null);
 	}
 
 }

@@ -28,41 +28,31 @@ public class WebSecurityConfig {
 
 		@Bean
 		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http.authorizeHttpRequests(requests -> requests
-										.anyRequest()
-                    .hasRole("USER"))
-                    // Possibly more configuration ...
-                    .formLogin(login -> login // enable form based log in
-                            // set permitAll for all URLs associated with Form Login
-                            .permitAll());
+			http.authorizeHttpRequests(requests -> requests
+					.anyRequest()
+					.hasRole("USER"))
+					// Possibly more configuration ...
+					.formLogin(login -> login // enable form based log in
+							// set permitAll for all URLs associated with Form Login
+							.permitAll());
 			return http.build();
 		}
 
 		@Bean
 		public UserDetailsService userDetailsService() {
-			UserDetails user = User.withDefaultPasswordEncoder()
-					.username("user")
+			UserDetails superAdmin = User.withUsername("superadmin").password("Feborcesim9!")
+					.roles("SUPERADMIN", "ADMIN", "USER").build();
+			UserDetails user = User.withUsername("user")
 					.password("password")
 					.roles("USER")
 					.build();
-			UserDetails admin = User.withDefaultPasswordEncoder()
+			UserDetails admin = User.withUsername("admin")
 					.username("admin")
 					.password("password")
 					.roles("ADMIN", "USER")
 					.build();
-			return new InMemoryUserDetailsManager(user, admin);
+			return new InMemoryUserDetailsManager(user, admin, superAdmin);
 		}
 		// Possibly more bean methods ...
 	}
-	// @Bean
-	// public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
-	// Exception {
-	// // return http
-	// // .authorizeHttpRequests(requests -> requests
-	// // .requestMatchers("/api/v1/**").permitAll()
-	// // .anyRequest().authenticated())
-	// // .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/**"))
-	// // .sessionManagement(management -> management.disable())
-	// // .build();
-	// }
 }
