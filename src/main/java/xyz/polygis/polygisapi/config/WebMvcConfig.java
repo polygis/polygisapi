@@ -29,4 +29,5 @@ public class WebMvcConfig {
 		secondaryTemplateResolver.setCheckExistence(true);
 
 		return secondaryTemplateResolver;
-	}}
+	}
+}

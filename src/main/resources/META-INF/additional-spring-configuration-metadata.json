@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "app.bmc.secret",
+    "type": "java.lang.String",
+    "description": "Buy me a coffe webhook secret"
+  },
+  {
+    "name": "app.bmc.signature-header",
+    "type": "java.lang.String",
+    "description": "A description for 'app.bmc.signature-header'"
+  },
+  {
+    "name": "app.credentials.superadmin.username",
+    "type": "java.lang.String",
+    "description": "A description for 'app.credentials.superadmin.username'"
+  },
+  {
+    "name": "app.credentials.superadmin.password",
+    "type": "java.lang.String",
+    "description": "A description for 'app.credentials.superadmin.password'"
+  },
+  {
+    "name": "app.credentials.admin.username",
+    "type": "java.lang.String",
+    "description": "A description for 'app.credentials.admin.username'"
+  },
+  {
+    "name": "app.credentials.admin.password",
+    "type": "java.lang.String",
+    "description": "A description for 'app.credentials.admin.username'"
+  },
+  {
+    "name": "app.credentials.user.username",
+    "type": "java.lang.String",
+    "description": "A description for 'app.credentials.admin.username'"
+  },
+  {
+    "name": "app.credentials.user.password",
+    "type": "java.lang.String",
+    "description": "A description for 'app.credentials.admin.username'"
+  }
+]}

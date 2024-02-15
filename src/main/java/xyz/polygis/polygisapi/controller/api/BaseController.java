@@ -12,7 +12,7 @@ import xyz.polygis.polygisapi.dto.ErrorMessage;
  * Super class for all REST API controllers - includes basic common. func.
  */
 
-abstract class BaseController {
+public abstract class BaseController {
 
 	protected ResponseEntity<?> buildSuccessBody(Map<String, ?> data) {
 		var body = new HashMap<String, Object>();

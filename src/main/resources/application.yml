@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: ${PROFILE}
   main:
     allow-bean-definition-overriding: true
   jpa:
@@ -23,4 +25,20 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security:
+          web:
+            FilterChainProxy: DEBUG
+app:
+  bmc:
+    secret: ${BMC_SECRET}
+    signature-header: ${BMC_SIGNATURE_HEADER:x-signature-sha256}
+  credentials:
+    superadmin:
+      username: ${SUPERADMIN_USERNAME}
+      password: ${SUPERADMIN_PASSWORD}
+    admin:
+      username: ${ADMIN_USERNAME}
+      password: ${ADMIN_PASSWORD}
+    user:
+      username: ${USER_USERNAME}
+      password: ${USER_PASSWORD}
